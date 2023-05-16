@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#nowPlayingData {
+    margin-top: 40px;
+    font-size: 20px;
+}
