@@ -33,12 +33,12 @@ function startSongUpdateLoop(socket) {
                     "[" + time + "] Nu op de radio: " + artist + " - " + song
                 );
 
-                try {
-                    // Remove () from song with year or explicit
-                    if (song.includes("(")) {
-                        song = song.split("(")[0].trim();
-                    }
-                } catch (error) {}
+                // try {
+                //     // Remove () from song with year or explicit
+                //     if (song.includes("(")) {
+                //         song = song.split("(")[0].trim();
+                //     }
+                // } catch (error) {}
 
                 getSongInfo(socket, song, artist);
 
@@ -62,37 +62,6 @@ function startSongUpdateLoop(socket) {
 
     // Start the initial update immediately
     updateSong();
-}
-
-async function initializeSongUpdate(socket) {
-    try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-
-        let result = data.icestats.source[9];
-        let title = result.title.split(" - ");
-        let artist = title[0];
-        let song = title[1];
-
-        try {
-            // Remove () from song with year or explicit
-            if (song.includes("(")) {
-                song = song.split("(")[0].trim();
-            }
-        } catch (error) {}
-        getSongInfo(socket, song, artist);
-
-        socket.emit("artiest", artist);
-        socket.emit("nummer", song);
-
-        if (song == undefined) {
-            song = "";
-        } else {
-            song = artist + " - " + song;
-        }
-    } catch (error) {
-        console.log(error);
-    }
 }
 
 function stopSongUpdateLoop(socket) {
@@ -128,5 +97,4 @@ module.exports = {
     startSongUpdateLoop,
     stopSongUpdateLoop,
     getSongInfo,
-    initializeSongUpdate,
 };

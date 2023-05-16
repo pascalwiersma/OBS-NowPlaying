@@ -8,7 +8,6 @@ const server = http.createServer(app);
 const {
     startSongUpdateLoop,
     stopSongUpdateLoop,
-    initializeSongUpdate,
 } = require("./functions/songUpdate");
 
 //  Configureer de socket.io server
@@ -20,9 +19,6 @@ const io = socketIO(server, {
 });
 
 io.on("connection", (socket) => {
-    // Als de socket verbinding maakt, Haal de huidige song op
-    initializeSongUpdate(socket);
-
     // Start de song update loop voor deze socket
     startSongUpdateLoop(socket);
 
