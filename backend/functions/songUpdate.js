@@ -67,9 +67,7 @@ function startSongUpdateLoop(socket) {
                     ":" +
                     date.getSeconds();
 
-                console.log(
-                    "[" + time + "] Nu op de radio: " + artist + " - " + song
-                );
+                console.log("[" + time + "] Nu op de radio: " + result.title);
 
                 currentAlbum = await getAlbum(artist, song);
                 currentArtist = artist;
@@ -87,8 +85,6 @@ function startSongUpdateLoop(socket) {
                 // Als er geen artiest is, zet dan op niets
                 if (song == undefined) {
                     song = "";
-                } else {
-                    song = artist + " - " + song;
                 }
             }
         } catch (error) {
@@ -147,19 +143,22 @@ async function getAlbum(artist, song) {
                 currentAlbum =
                     "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
             } else {
-                // Als de artiest NOS Nieuws is, zet dan het NOS logo
-                if (artist == "NOS Nieuws") {
-                    currentAlbum = "https://localhost:3000/brandings/nos.png";
-                } else if (artist == "ANWB Verkeer") {
-                    // Als de artiest ANWB Verkeer is, zet dan het ANWB logo
-                    currentAlbum = "https://localhost:3000/brandings/anwb.jpg";
-                } else {
-                    // Anders zet dan het album van de API
-                    currentAlbum = data.result.covers.medium;
-                }
+                // Anders zet dan het album van de API
+                currentAlbum = data.result.covers.medium;
             }
         } else {
-            currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
+            // Als de artiest NOS Nieuws is, zet dan het NOS logo
+            if (artist == "NOS Nieuws") {
+                currentAlbum =
+                    "https://live.noordkopcentraal.nl/api/nowplaying/brandings/nos.png";
+            } else if (artist == "ANWB Verkeer") {
+                // Als de artiest ANWB Verkeer is, zet dan het ANWB logo
+                currentAlbum =
+                    "https://live.noordkopcentraal.nl/api/nowplaying/brandings/anwb.jpg";
+            } else {
+                currentAlbum =
+                    "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
+            }
         }
 
         return currentAlbum;

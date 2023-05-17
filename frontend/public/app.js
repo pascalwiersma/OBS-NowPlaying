@@ -39,5 +39,5 @@ socket.on("broadcast-nowplaying", () => {
         setTimeout(function () {
             albumContainer.classList.add("hide");
         }, 100); // Voeg een kleine vertraging toe voor de overgang
-    }, 7000);
+    }, 15000);
 });

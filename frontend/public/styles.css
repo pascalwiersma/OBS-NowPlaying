@@ -1,10 +1,14 @@
 @font-face {
     font-family: HighlandGothicFLF;
-    src: url("/fonts/HighlandGothicFLF.ttf");
+    src: url(./fonts/HighlandGothicFLF.ttf);
+}
+
+h2 {
+    font-family: HighlandGothicFLF;
+    font-size: 30px;
 }
 
 body {
-    font-family: HighlandGothicFLF;
     background-color: transparent;
 }
 
