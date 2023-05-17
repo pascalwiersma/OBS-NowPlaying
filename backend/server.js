@@ -43,5 +43,6 @@ server.listen(config.port, () =>
    |              Pascal Services               |
    |        https://pascalservices.nl           |
    ----------------------------------------------
-`)
+               Running on port ${config.port}
+   `)
 );

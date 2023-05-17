@@ -22,8 +22,8 @@ async function initData(socket) {
 
     let album = await getAlbum(artist, song);
 
-    socket.emit("artiest", currentArtist);
-    socket.emit("nummer", currentSong);
+    socket.emit("artist", currentArtist);
+    socket.emit("number", currentSong);
 
     socket.emit("album", album);
 }
@@ -160,7 +160,7 @@ async function getAlbum(artist, song) {
         return currentAlbum;
     } catch (error) {
         console.log(error);
-        currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
+        currentAlbum = config.stations_logo;
     }
 }
 

@@ -19,7 +19,7 @@ socket.on("album", (data) => {
 });
 
 function updateNowPlaying() {
-    if (nummer == null) {
+    if (number == null) {
         nowplaying.innerHTML = artist;
     } else {
         nowplaying.innerHTML = artist + " - " + number;
