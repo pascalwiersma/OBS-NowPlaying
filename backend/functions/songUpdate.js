@@ -2,10 +2,6 @@ const config = require("../config.json");
 const API_URL = config.ICECAST_URL;
 const API_URL_SONGINFO = config.MUZIEKINFO_URL;
 
-// get time and date
-const date = new Date();
-const time = date.getHours() + ":" + date.getMinutes();
-
 let previousData = null;
 let currentArtist = null;
 let currentSong = null;
@@ -17,7 +13,7 @@ async function initData(socket) {
     // Split title
     let title = fulltitle.split(" - ");
     let artist = title[0];
-    let song = title[1];
+    let song = title[1] ?? "";
 
     // if () in song, remove it
     if (song.includes("(")) {
@@ -25,7 +21,7 @@ async function initData(socket) {
     }
 
     let album = await getAlbum(artist, song);
-    
+
     socket.emit("artiest", currentArtist);
     socket.emit("nummer", currentSong);
 
@@ -38,12 +34,13 @@ function startSongUpdateLoop(socket) {
             const response = await fetch(API_URL);
             const data = await response.json();
 
-            // Compare data with previousData
+            // Bekijk of de titel is veranderd
             if (
                 data.icestats.source[9].title !==
                 previousData?.icestats.source[9].title
             ) {
-                previousData = data; // Update previousData
+                // Update previousData
+                previousData = data;
 
                 let result = data.icestats.source[9];
 
@@ -60,6 +57,15 @@ function startSongUpdateLoop(socket) {
                 } catch (error) {
                     console.log("Error: " + error);
                 }
+
+                // Tijd van nu ophalen
+                const date = new Date();
+                const time =
+                    date.getHours() +
+                    ":" +
+                    date.getMinutes() +
+                    ":" +
+                    date.getSeconds();
 
                 console.log(
                     "[" + time + "] Nu op de radio: " + artist + " - " + song
@@ -121,27 +127,33 @@ async function getIcecastTitle() {
 async function getAlbum(artist, song) {
     try {
         const url =
-            API_URL_SONGINFO + "/song?title=" + encodeURIComponent(artist) + "&artist=" + encodeURIComponent(song);
-        console.log(url);
+            API_URL_SONGINFO +
+            "/song?title=" +
+            encodeURIComponent(song) +
+            "&artist=" +
+            encodeURIComponent(artist);
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.found == false) {
-            currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
-            
+        // Als de status 200 is (OK), dan is er een album gevonden. Anders niet.
+        if (response.status === 200) {
+            // Als er geen album is gevonden, zet dan het NKC logo
+            if (data.found == false) {
+                currentAlbum =
+                    "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
+            } else {
+                currentAlbum = data.result.covers.medium;
+            }
         } else {
-            currentAlbum = data.result.covers.medium;
+            currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
         }
 
-        console.log("Current album is " + currentAlbum);
-        
         return currentAlbum;
     } catch (error) {
         console.log(error);
         currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
     }
 }
-
 
 module.exports = {
     startSongUpdateLoop,
