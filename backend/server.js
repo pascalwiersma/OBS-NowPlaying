@@ -20,6 +20,8 @@ const io = socketIO(server, {
 });
 
 io.on("connection", (socket) => {
+    io.emit("broadcast-nowplaying");
+
     initData(socket);
 
     // Start de song update loop voor deze socket
@@ -33,13 +35,13 @@ io.on("connection", (socket) => {
 
 server.listen(config.port, () =>
     console.log(`
-   ---------------------------------------------
+   ----------------------------------------------
    |   Noordkop Centraal NowPlaying (Backend)   |
    |                                            |
-   |               © 2023 - v0.0.1              |
+   |               © 2023 - v1.0.0              |
    |        Dit systeem is mede mogelijk        |
    |        gemaakt door Pascal Services        |
    |         https://pascalservices.nl          |
-   ---------------------------------------------
+   ----------------------------------------------
 `)
 );

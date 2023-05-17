@@ -11,19 +11,22 @@
         />
     </head>
     <body>
-        <div class="text-center">
-            <div id="nowplaying">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+        <div class="p-3">
+            <div id="cardContainer" class="hide">
+                <div class="row">
+                    <div class="col">
+                        <img
+                            id="albumart"
+                            class="img-fluid rounded"
+                            src="album.jpg"
+                            alt="Album Art"
+                        />
+                    </div>
+                    <div class="col-auto">
+                        <h2 id="nowplaying">Albumtitel</h2>
+                    </div>
                 </div>
             </div>
-
-            <img
-                id="albumart"
-                alt="Albumart"
-                class="img-fluid"
-                src="https://live.noordkopcentraal.nl/img/NKC-Logo.png"
-            />
         </div>
 
         <script

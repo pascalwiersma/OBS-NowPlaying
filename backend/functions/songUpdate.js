@@ -47,7 +47,7 @@ function startSongUpdateLoop(socket) {
                 // Split title
                 let title = result.title.split(" - ");
                 let artist = title[0];
-                let song = title[1];
+                let song = title[1] ?? "";
 
                 try {
                     // Remove () from song with year or explicit
@@ -78,6 +78,11 @@ function startSongUpdateLoop(socket) {
                 socket.emit("artiest", currentArtist);
                 socket.emit("nummer", currentSong);
                 socket.emit("album", currentAlbum);
+
+                // wacht 4 seconde en stuur dan de broadcast broadcast-nowplaying
+                setTimeout(() => {
+                    socket.emit("broadcast-nowplaying");
+                }, 4000);
 
                 // Als er geen artiest is, zet dan op niets
                 if (song == undefined) {
@@ -142,7 +147,16 @@ async function getAlbum(artist, song) {
                 currentAlbum =
                     "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
             } else {
-                currentAlbum = data.result.covers.medium;
+                // Als de artiest NOS Nieuws is, zet dan het NOS logo
+                if (artist == "NOS Nieuws") {
+                    currentAlbum = "https://localhost:3000/brandings/nos.png";
+                } else if (artist == "ANWB Verkeer") {
+                    // Als de artiest ANWB Verkeer is, zet dan het ANWB logo
+                    currentAlbum = "https://localhost:3000/brandings/anwb.jpg";
+                } else {
+                    // Anders zet dan het album van de API
+                    currentAlbum = data.result.covers.medium;
+                }
             }
         } else {
             currentAlbum = "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
