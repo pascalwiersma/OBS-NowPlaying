@@ -1,7 +1,8 @@
 {
     "port": 3000,
-    "Stations_Naam": "Noordkop Centraal",
-    "Stations_Code": "NKC",
-    "ICECAST_URL": "https://radiostreams.noordkopcentraal.nl:9443/status-json.xsl",
-    "MUZIEKINFO_URL": "https://tools.elevatehosting.co.uk/api/v2/lookup"
+    "stations_name": "Your Station",
+    "stations_logo": "your logo",
+    "ICECAST_URL": "<URL>/status-json.xsl",
+    "ICECAST_STATION_NUMBER": 0, 
+    "PUBLIC_MUSIC_API_URL": "https://tools.elevatehosting.co.uk/api/v2/lookup"
 }

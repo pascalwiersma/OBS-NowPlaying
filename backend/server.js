@@ -36,12 +36,12 @@ io.on("connection", (socket) => {
 server.listen(config.port, () =>
     console.log(`
    ----------------------------------------------
-   |   Noordkop Centraal NowPlaying (Backend)   |
+   |             ©  OBS NowPlaying              |
    |                                            |
-   |               © 2023 - v1.0.0              |
-   |        Dit systeem is mede mogelijk        |
-   |        gemaakt door Pascal Services        |
-   |         https://pascalservices.nl          |
+   |                                            |
+   |     OBS Nowplaying system is powered by    |
+   |              Pascal Services               |
+   |        https://pascalservices.nl           |
    ----------------------------------------------
 `)
 );

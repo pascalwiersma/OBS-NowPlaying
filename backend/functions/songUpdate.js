@@ -1,6 +1,6 @@
 const config = require("../config.json");
 const API_URL = config.ICECAST_URL;
-const API_URL_SONGINFO = config.MUZIEKINFO_URL;
+const API_URL_SONGINFO = config.PUBLIC_MUSIC_API_URL;
 
 let previousData = null;
 let currentArtist = null;
@@ -58,7 +58,7 @@ function startSongUpdateLoop(socket) {
                     console.log("Error: " + error);
                 }
 
-                // Tijd van nu ophalen
+                // Time
                 const date = new Date();
                 const time =
                     date.getHours() +
@@ -67,22 +67,29 @@ function startSongUpdateLoop(socket) {
                     ":" +
                     date.getSeconds();
 
-                console.log("[" + time + "] Nu op de radio: " + result.title);
+                console.log(
+                    "[" +
+                        time +
+                        "] Now on " +
+                        config.stations_name +
+                        ": " +
+                        result.title
+                );
 
                 currentAlbum = await getAlbum(artist, song);
                 currentArtist = artist;
                 currentSong = song;
 
-                socket.emit("artiest", currentArtist);
-                socket.emit("nummer", currentSong);
+                socket.emit("artist", currentArtist);
+                socket.emit("number", currentSong);
                 socket.emit("album", currentAlbum);
 
-                // wacht 4 seconde en stuur dan de broadcast broadcast-nowplaying
+                // Wait 4 seconds before broadcasting the now playing
                 setTimeout(() => {
                     socket.emit("broadcast-nowplaying");
                 }, 4000);
 
-                // Als er geen artiest is, zet dan op niets
+                // If song is undefined, set it to empty string
                 if (song == undefined) {
                     song = "";
                 }
@@ -136,29 +143,18 @@ async function getAlbum(artist, song) {
         const response = await fetch(url);
         const data = await response.json();
 
-        // Als de status 200 is (OK), dan is er een album gevonden. Anders niet.
+        // if response is 200, set the album
         if (response.status === 200) {
-            // Als er geen album is gevonden, zet dan het NKC logo
+            // If there is no album found, set the logo
             if (data.found == false) {
-                currentAlbum =
-                    "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
+                currentAlbum = config.stations_logo;
             } else {
-                // Anders zet dan het album van de API
+                // Set the album
                 currentAlbum = data.result.covers.medium;
             }
         } else {
-            // Als de artiest NOS Nieuws is, zet dan het NOS logo
-            if (artist == "NOS Nieuws") {
-                currentAlbum =
-                    "https://live.noordkopcentraal.nl/api/nowplaying/brandings/nos.png";
-            } else if (artist == "ANWB Verkeer") {
-                // Als de artiest ANWB Verkeer is, zet dan het ANWB logo
-                currentAlbum =
-                    "https://live.noordkopcentraal.nl/api/nowplaying/brandings/anwb.jpg";
-            } else {
-                currentAlbum =
-                    "https://live.noordkopcentraal.nl/img/NKC-Logo.png";
-            }
+            // If there is no album found, set the logo
+            currentAlbum = config.stations_logo;
         }
 
         return currentAlbum;
