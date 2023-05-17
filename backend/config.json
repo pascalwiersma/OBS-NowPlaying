@@ -2,7 +2,7 @@
     "port": 3000,
     "stations_name": "your station",
     "stations_logo": "your logo",
-    "ICECAST_URL": "https://radiostreams.noordkopcentraal.nl:9443/status-json.xsl",
+    "ICECAST_URL": "<URL>/status-json.xsl",
     "ICECAST_STATION_NUMBER": 0, 
     "PUBLIC_MUSIC_API_URL": "https://tools.elevatehosting.co.uk/api/v2/lookup"
 }
